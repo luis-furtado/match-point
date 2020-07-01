@@ -1,6 +1,6 @@
 # MatchPointExpo
 
-##Run MatchPoint app
+## Run MatchPoint app
 
 * Clone git repository
 
@@ -13,7 +13,7 @@
 * execute command `i` to run iOS simulator
 
 
-###colors
+### colors
 green normal rgb(254, 90, 31)
 green blur rgb(254, 115, 62)
 gray rgb(220, 220, 220)
