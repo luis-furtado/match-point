@@ -30,7 +30,7 @@ export default function ProfileCard(props) {
           </View>
         </View>
         <View style={styles.rateContainer}>
-          <Text style={styles.price}>R$ {props.price}</Text>
+          <Text style={styles.price}>R$ {props.price},00</Text>
         </View>
       </View>
       <View style={styles.attractionsContainer}>

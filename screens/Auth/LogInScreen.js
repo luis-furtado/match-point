@@ -16,11 +16,30 @@ export default class LoginScreen extends Component {
   constructor({ navigation }) {
     super(navigation);
     this.state = {
-      username: null,
+      email: null,
       password: null,
+      authenticated: null,
     };
     this.navigation = navigation;
   }
+
+  sendUserData() {
+    const formData = new FormData();
+    formData.append('email', this.state.email);
+    formData.append('password', this.state.password);
+
+    fetch("http://127.0.0.1:8000/api/login", {
+      method: "post",
+      headers: {     
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }, 
+      body: formData,
+    }).then(response => response.json())
+      .then(resp => global.user_api_token = resp.data.api_token)
+      .finally(() => this.navigation.navigate('AppNavigator'))
+  }
+
   render() {
     return (
       <View style={styles.fullScreen}>
@@ -31,13 +50,14 @@ export default class LoginScreen extends Component {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder="Usuário"
-              onChange={(text) => this.setState({ username: text })}
+              placeholder="Email"
+              onChangeText={(text) => this.setState({ email: text })}
             />
             <TextInput
               style={styles.textInput}
               placeholder="Senha"
-              onChange={(text) => this.setState({ password: text })}
+              secureTextEntry={true}
+              onChangeText={(text) => this.setState({ password: text })}
             />
             <View style={styles.forgotPassword}>
               <TouchableOpacity onPress={() => alert("Botão esqueceu senha")}>
@@ -51,7 +71,7 @@ export default class LoginScreen extends Component {
             <CustomButton
               style={styles.buttonLogin}
               title="Entrar"
-              onPress={() => this.navigation.navigate("AppNavigator")}
+              onPress={() => this.sendUserData()}
             />
           </View>
           <Hr size="60" />

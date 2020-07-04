@@ -10,6 +10,9 @@ import LogInScreen from "./screens/Auth/LogInScreen.js";
 import SignInScreen from "./screens/Auth/SignInScreen.js";
 import AppNavigator from "./screens/AppNavigator.js";
 
+//global variables
+import './global.js';
+
 const Stack = createStackNavigator();
 
 export default function App() {

@@ -38,7 +38,7 @@ export default function ProfileNavigation({ navigation }) {
             <Button
               title="Sair"
               color="rgb(254, 115, 62)"
-              onPress={() => alert("The EXIT button")}
+              onPress={() => navigation.navigate('LogIn')}
             />
           ),
         }}

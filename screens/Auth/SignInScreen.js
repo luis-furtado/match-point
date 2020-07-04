@@ -11,22 +11,19 @@ import {
 } from "react-native";
 
 import Tags from "../../components/tag.js";
-
 import { Icon } from "react-native-elements";
-
 import defaultStyles from "../../styles/defaultStyles.js";
-
 import PickerSelect from "react-native-picker-select";
 
 export default class SignInScreen extends Component {
   constructor({ navigation }) {
     super(navigation);
     this.state = {
-      isLoading: false,
       name: null,
       email: null,
       phone: null,
       password: null,
+      authenticated: null,
     };
     this.navigation = navigation;
   }
@@ -43,23 +40,21 @@ export default class SignInScreen extends Component {
   // }
 
   sendUserData() {
-    var data = {
-      name: this.state.name,
-      email: this.state.email,
-      phone: this.state.phone,
-      password: this.state.password,
-    };
+    console.log(this.state.email);
+    const formData = new FormData();
+    formData.append('name', this.state.name);
+    formData.append('email', this.state.email);
+    formData.append('password', this.state.password);
 
     fetch("http://127.0.0.1:8000/api/users/register", {
-      method: "POST",
-      headers: {
+      method: "post",
+      headers: {     
         Accept: "application/json",
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firstParam: "teste",
-      }),
-    }).then((response) => console.log(response));
+      }, 
+      body: formData,
+    }).then(response => response.json())
+      .then(resp => (resp.data.created_at ?? this.setState({authenticated: true})))
   }
 
   render() {
@@ -92,7 +87,8 @@ export default class SignInScreen extends Component {
                 <TextInput
                   style={styles.textInput}
                   placeholder="João da Silva"
-                  onChange={(text) => this.setState({ name: text })}
+                  value={this.state.name}
+                  onChangeText={(text) => this.setState({ name: text })}
                 />
               </View>
               <View style={styles.input}>
@@ -100,7 +96,8 @@ export default class SignInScreen extends Component {
                 <TextInput
                   style={styles.textInput}
                   placeholder="exemplo@gmail.com"
-                  onChange={(text) => this.setState({ email: text })}
+                  value={this.state.email}
+                  onChangeText={(text) => this.setState({ email: text })}
                 />
               </View>
               <View style={styles.input}>
@@ -108,7 +105,8 @@ export default class SignInScreen extends Component {
                 <TextInput
                   style={styles.textInput}
                   placeholder="61 999137803"
-                  onChange={(text) => this.setState({ phone: text })}
+                  value={this.state.phone}
+                  onChangeText={(text) => this.setState({ phone: text })}
                 />
               </View>
               <View style={styles.input}>
@@ -117,7 +115,8 @@ export default class SignInScreen extends Component {
                   style={styles.textInput}
                   placeholder="********"
                   secureTextEntry={true}
-                  onChange={(text) => this.setState({ password: text })}
+                  value={this.state.password}
+                  onChangeText={(text) => this.setState({ password: text })}
                 />
               </View>
               <TouchableOpacity
