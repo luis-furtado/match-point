@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useCallback } from "react";
 import {
   View,
   Text,
@@ -11,23 +11,82 @@ import {
 } from "react-native";
 
 import Hr from "../components/hr.js";
-import Tags from "../components/tag.js";
 
 import { Icon } from "react-native-elements";
 
 export default class CreateEventScreen extends Component {
-  constructor(props) {
-    super(props);
+  constructor({ navigation }) {
+    super(navigation);
     this.state = {
-      name: null,
+      title: null,
       attractions: null,
       local: null,
       date: null,
       price: null,
       description: null,
-      category: null,
+      tickets_available: null,
+      event_category_id: null,
+      categories: [],
     };
+
+    this.navigation = navigation;
   }
+
+  componentDidMount() { 
+    this.getEventCategoriesData();
+  }
+
+  getEventCategoriesData() {
+    fetch("http://127.0.0.1:8000/api/events/categories", {
+      method: "get",
+    }).then(response => response.json())
+      .then(resp => this.setState({categories: resp}))
+      .then(() => console.log(this.state.categories));
+  }
+
+  sendUserData() {
+    const formData = new FormData();
+    formData.append('title', this.state.title);
+    formData.append('attractions', this.state.attractions);
+    formData.append('location', this.state.local);
+    formData.append('date', this.state.date);
+    formData.append('price', this.state.price);
+    formData.append('description', this.state.description);
+    formData.append('tickets_available', this.state.tickets_available);
+    formData.append('event_category_id', this.state.event_category_id);
+
+    fetch("http://127.0.0.1:8000/api/user/events/create", {
+      method: "post",
+      headers: {     
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + global.user_api_token,
+      }, 
+      body: formData,
+    }).then(response => response.json())
+      .then((resp) => {
+        if(resp.created_at) {
+          alert('Evento criado com sucesso!');
+          this.navigation.goBack();
+        }
+        else {
+          alert('Faltam campos a serem preenchidos');
+        }
+      });
+  }
+
+  setCategory(index) {
+    this.setState((state) => {
+      var categories = state.categories;
+      categories.forEach(category => category['active'] = false);
+      categories[index]["active"] = !categories[index]["active"];
+      return {
+        categories,
+      };
+    });
+    this.setState({event_category_id: this.state.categories[index].id});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -48,8 +107,8 @@ export default class CreateEventScreen extends Component {
             <Text style={styles.labelInput}>Título:</Text>
             <TextInput
               style={styles.textInput}
-              onChangeText={(text) => this.setState({ name: text })}
-              value={this.state.name}
+              onChangeText={(text) => this.setState({ title: text })}
+              value={this.state.title}
             />
           </View>
           <View style={styles.input}>
@@ -84,6 +143,14 @@ export default class CreateEventScreen extends Component {
               value={this.state.price}
             />
           </View>
+          <View style={styles.input}>
+            <Text style={styles.labelInput}>Quantidade de ingressos disponíveis:</Text>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(text) => this.setState({ tickets_available: text })}
+              value={this.state.tickets_available}
+            />
+          </View>
           <View style={styles.inputTextArea}>
             <TextInput
               style={styles.textAreaInput}
@@ -92,12 +159,32 @@ export default class CreateEventScreen extends Component {
               placeholderTextColor="gray"
               numberOfLines={5}
               multiline={true}
+              value={this.state.description}
+              onChangeText={(text) => this.setState({description: text})}
             />
           </View>
           <Text style={styles.interestsSpan}>Categoria do evento (selecione uma)</Text>
-          <Tags values={["Empreendedorismo", "Corrida"]} />
-        </ScrollView>
-        <TouchableOpacity
+          <View style={styles.tagContainer}>
+          { this.state.categories.map((category, index) => {
+            return (
+              <Text
+              key={index}
+              style={[
+                styles.tag,
+                {
+                  backgroundColor: category.active
+                    ? "rgb(254, 115, 62)"
+                    : "rgb(220, 220, 220)",
+                },
+              ]}
+              onPress={() => this.setCategory(index)}
+            >
+              {category.name}
+            </Text>
+            );
+          })}
+          </View>
+          <TouchableOpacity
                 style={styles.submitContainer}
                 onPress={() => this.sendUserData()}
               >
@@ -109,6 +196,7 @@ export default class CreateEventScreen extends Component {
                 />
                 <Text style={styles.submitButton}>Enviar</Text>
               </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }
@@ -175,11 +263,26 @@ const styles = StyleSheet.create({
   submitContainer: {
     flexDirection: "row-reverse",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: -30,
   },
   submitButton: {
     color: "rgb(254, 115, 62)",
     fontSize: 16,
     marginRight: 12,
+  },
+  tag: {
+    borderRadius: 10,
+    overflow: "hidden",
+    fontSize: 13,
+    marginRight: 12,
+    paddingVertical: 1,
+    paddingHorizontal: 10,
+    marginBottom: 12,
+    color: "black",
+  },
+  tagContainer: {
+    marginTop: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });

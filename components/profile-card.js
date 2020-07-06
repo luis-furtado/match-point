@@ -1,53 +1,99 @@
-import React from "react";
-import { View, Image, StyleSheet, Text, FlatList } from "react-native";
+import React, { Component } from "react";
+import { View, Image, StyleSheet, Text, FlatList, Button } from "react-native";
 import Tag from "../components/tag.js";
 
 import { Icon } from "react-native-elements";
 
-export default function ProfileCard(props) {
-  return (
-    <View style={props.style}>
-      <View style={styles.container}>
-        <Image
-          style={styles.photo}
-          source={
-            props.imagePath || require("../assets/images/no-photo-profile.png")
-          }
-        />
-        <View style={styles.nameUsernameContainer}>
-          <Text style={styles.name}>{props.name}</Text>
-          <View>
-            <View style={styles.infoContainer}>
-            <Icon name="hourglass-half" type="font-awesome" size="14" />
-              <Text style={styles.info}>
-                {props.infoDate}
-              </Text>
+export default class ProfileCard extends Component {
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  buyTicket() {
+    const formData = new FormData();
+    formData.append('event_id', this.props.id);
+
+    fetch("http://127.0.0.1:8000/api/user/tickets/comprar", {
+      method: "post",
+      headers: {     
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + global.user_api_token
+      }, 
+      body: formData,
+    }).then(response => response.json())
+      .then(resp => resp.message && resp.message == 'Unauthenticated.' ? 
+      this.props.navigation.navigate('LogIn') : 
+      (alert('Sucesso! Ingresso adicionado em meus tickets.') && this.props.navigation.navigate('Ticket')))
+  }
+
+  render() {
+    return (
+      <View style={this.props.style}>
+        <View style={styles.container}>
+          <Image
+            style={styles.photo}
+            source={
+              this.props.imagePath || require("../assets/images/no-photo-profile.png")
+            }
+          />
+          <View style={styles.nameUsernameContainer}>
+            <Text style={styles.name}>{this.props.name}</Text>
+            <View>
+              <View style={styles.infoContainer}>
+              <Icon name="hourglass-half" type="font-awesome" size="14" />
+                <Text style={styles.info}>
+                  {this.props.infoDate}
+                </Text>
+              </View>
+              <View style={styles.locationContainer}>
+                <Icon name="map-marker" type="font-awesome" size="14" />
+                <Text style={styles.info}>{this.props.location}</Text>
+              </View>
             </View>
-            <View style={styles.locationContainer}>
-              <Icon name="map-marker" type="font-awesome" size="14" />
-              <Text style={styles.info}>{props.location}</Text>
+          </View>
+          <View style={styles.rateContainer}>
+            <Text style={styles.price}>R$ {this.props.price},00</Text>
+          </View>
+        </View>
+        <View style={styles.attractionsContainer}>
+          <Icon name="users" type="font-awesome" size="14" />
+          <Text style={styles.infoAttractions}>
+            {this.props.attractions}
+          </Text>
+        </View>
+  
+        <Text style={styles.description}>{this.props.description}</Text>
+        <View style={styles.bottomContainer}>
+          <View style={styles.tagsContainer}>
+            <Text style={styles.tag}>{this.props.category}</Text>
+          </View>
+          <View style={styles.containerBuyButton}> 
+            <View style={styles.buyButton}>
+              <Button
+                title="Comprar"
+                color="rgb(254, 115, 62)"
+                onPress={() => this.buyTicket()}
+              />
+              <Icon
+                name='angle-right'
+                type='font-awesome'
+                size="30"
+                color='rgb(254, 115, 62)'
+                style={{marginBottom: 2}}
+              />
+            </View>
+            <View>
+              <Text style={styles.spanBuyButton}>
+                {this.props.tickets_available} disponíveis
+              </Text>
             </View>
           </View>
         </View>
-        <View style={styles.rateContainer}>
-          <Text style={styles.price}>R$ {props.price},00</Text>
-        </View>
       </View>
-      <View style={styles.attractionsContainer}>
-        <Icon name="users" type="font-awesome" size="14" />
-        <Text style={styles.infoAttractions}>
-          {props.attractions}
-        </Text>
-      </View>
-
-      <Text style={styles.description}>{props.description}</Text>
-      <View style={styles.bottomContainer}>
-        <View style={styles.tagsContainer}>
-          <Text style={styles.tag}>{props.category}</Text>
-        </View>
-      </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -127,7 +173,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tagsContainer: {
-    marginTop: 10,
     flexDirection: "row",
   },
   tag: {
@@ -148,4 +193,18 @@ const styles = StyleSheet.create({
   yearsOldSpan: {
     fontWeight: "300",
   },
+  buyButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  spanBuyButton: {
+    marginTop: -4,
+    color: 'gray',
+    fontSize: 10,
+    fontWeight: "400"
+  },
+  containerBuyButton: {
+    flexDirection: "column",
+    alignItems: "flex-end"
+  }
 });

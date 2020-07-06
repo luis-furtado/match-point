@@ -14,6 +14,7 @@ const Stack = createStackNavigator();
 export default function ProfileNavigation({ navigation }) {
   return (
     <Stack.Navigator
+    initialRouteName="ProfileShow"
       screenOptions={{
         headerTintColor: "rgb(254, 115, 62)",
         headerTitleStyle: {
@@ -27,20 +28,6 @@ export default function ProfileNavigation({ navigation }) {
         component={ShowProfileScreen}
         options={{
           title: "Perfil",
-          headerLeft: () => (
-            <Button
-              title="Editar"
-              color="rgb(254, 115, 62)"
-              onPress={() => navigation.navigate("ProfileEdit")}
-            />
-          ),
-          headerRight: () => (
-            <Button
-              title="Sair"
-              color="rgb(254, 115, 62)"
-              onPress={() => navigation.navigate('LogIn')}
-            />
-          ),
         }}
       />
       <Stack.Screen

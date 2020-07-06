@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 import ProfileCard from "../components/profile-card.js";
 import Hr from "../components/hr.js";
@@ -9,18 +10,27 @@ import Search from "../components/search.js";
 import defaultStyles from "../styles/defaultStyles.js";
 
 export default class HomeScreen extends Component {
-  constructor({navigation}) {
-    super(navigation);
+  constructor(props) {
+    super(props);
     this.state = {
       events: [],
     };
-    this.navigation = navigation;
     this.loop = [0, 1, 2, 3, 4, 5];
   }
 
   componentDidMount() {
     this.getEventsData();
+
+    const { navigation } = this.props;
+
+    // this.focusListener = navigation.addListener('didFocus', () => {
+    //   this.getEventsData();
+    // });
   }
+
+  // componentWillUnmount() {
+  //   this.focusListener.remove();
+  // }
 
   getEventsData() {
     fetch("http://127.0.0.1:8000/api/events", {
@@ -42,6 +52,7 @@ export default class HomeScreen extends Component {
             return (
               <View>
                 <ProfileCard
+                  id={event.id}
                   imagePath={require("../assets/images/show.png")}
                   name={event.title}
                   location={event.location}
@@ -50,6 +61,8 @@ export default class HomeScreen extends Component {
                   description={event.description}
                   price={event.price}
                   category={event.event_category.name}
+                  tickets_available={event.tickets_available}
+                  navigation={this.navigation}
                 />
                 {index != this.state.events.length - 1 && <Hr size="20" />}
               </View>

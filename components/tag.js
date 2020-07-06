@@ -9,7 +9,8 @@ export default class Tag extends Component {
     this.state = {
       tags: this.props.values.map((tag) => {
         return {
-          name: tag,
+          id: tag.id,
+          name: tag.name,
           active: false,
         };
       }),
@@ -20,11 +21,13 @@ export default class Tag extends Component {
   setActiveTag = (index) => {
     this.setState((state) => {
       var tags = state.tags;
+      tags.forEach(tag => tag['active'] = false);
       tags[index]["active"] = !tags[index]["active"];
       return {
         tags,
       };
     });
+    this.props.parentCallback(this.state.tags[index].id);
   };
 
   render() {

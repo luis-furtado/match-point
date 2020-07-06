@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
   attractionsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 15,
+    justifyContent: "center",
+    paddingTop: 30,
+    paddingBottom: 10,
   },
   locationContainer: {
     flexDirection: "row",
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
   infoAttractions: {
     fontWeight: "400",
     marginLeft: 10,
+    fontSize: 18,
   },
   rateContainer: {
     height: "100%",

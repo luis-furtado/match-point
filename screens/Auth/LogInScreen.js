@@ -36,8 +36,8 @@ export default class LoginScreen extends Component {
       }, 
       body: formData,
     }).then(response => response.json())
-      .then(resp => global.user_api_token = resp.data.api_token)
-      .finally(() => this.navigation.navigate('AppNavigator'))
+      .then(resp => { global.user_api_token = resp.data.api_token; global.user = resp.data; console.log(resp) })
+      .finally(() => global.user_api_token ? this.navigation.navigate('AppNavigator') : alert('Email ou senha incorretos!'))
   }
 
   render() {

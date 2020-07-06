@@ -11,13 +11,28 @@ import { Icon } from "react-native-elements";
 import defaultStyles from "../styles/defaultStyles.js";
 
 export default class SearchScreen extends Component {
-  constructor({ navigation}) {
+  constructor({ navigation }) {
     super(navigation);
     this.state = {
       isLoading: false,
-      search: null,
+      tickets: [],
     };
     this.navigation = navigation;
+  }
+
+  componentDidMount() {
+    this.loadTicketsData();
+  }
+
+  loadTicketsData() {
+    fetch("http://127.0.0.1:8000/api/user/tickets", {
+      method: "get",
+      headers: {     
+        Authorization: "Bearer " + global.user_api_token
+      }, 
+    }).then(response => response.json())
+      .then(resp => this.setState({tickets: resp}))
+      .then(() => console.log(this.state.tickets));
   }
 
   render() {
@@ -37,20 +52,24 @@ export default class SearchScreen extends Component {
                 />
               </View>
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>Cadastre-se grátis</Text>
+            <Text style={styles.headerTitle}>Meus Ingressos</Text>
             <View style={styles.headerFreeSpace}></View>
           </View>
         <View>
-        <TicketCard
-                imagePath={require("../assets/images/show.png")}
-                name="Show Henrique e Juliano"
-                location="Mané Garrincha, Brasília - DF"
-                infoDate="18/7/2020  21:00"
-                ticketHash="HIOF52F"
-                description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                price="400,00"
-                category="teste"
-              />
+        <ScrollView>
+        { this.state.tickets.map((ticket) => {
+          return (
+            <TicketCard
+              imagePath={require("../assets/images/show.png")}
+              name={ticket.event.title}
+              location={ticket.event.location}
+              infoDate={ticket.event.date}
+              ticketHash={ticket.hashid}
+              price={ticket.event.price}
+                  />
+          );
+           }) }
+        </ScrollView>
         </View>
       </View>
     );
