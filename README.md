@@ -2,6 +2,9 @@
 
 ## Run MatchPoint app
 
+* Install `expo cli` if you not have yet using command `npm install -g expo-cli`.
+* Check if expo is installed running `expo --version`
+
 * Clone git repository
 
 * get into a folder of repository
