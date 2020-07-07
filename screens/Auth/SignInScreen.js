@@ -40,7 +40,6 @@ export default class SignInScreen extends Component {
   // }
 
   sendUserData() {
-    console.log(this.state.email);
     const formData = new FormData();
     formData.append('name', this.state.name);
     formData.append('email', this.state.email);

@@ -4,12 +4,11 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import ProfileCard from "../components/profile-card.js";
 import Hr from "../components/hr.js";
-import Search from "../components/search.js";
 
 //styles
 import defaultStyles from "../styles/defaultStyles.js";
 
-export default class HomeScreen extends Component {
+export default class ShowEvents extends Component {
   constructor({navigation}) {
     super({navigation});
     this.state = {
@@ -32,20 +31,18 @@ export default class HomeScreen extends Component {
   // }
 
   getEventsData() {
-    fetch("http://127.0.0.1:8000/api/events", {
+    fetch("http://127.0.0.1:8000/api/user/events", {
       method: "get",
       headers: {     
         Authorization: "Bearer " + global.user_api_token
       }, 
     }).then(response => response.json())
-      .then(resp => this.setState({events: resp}))
-      .then(() => console.log(this.state.events));
+      .then(resp => this.setState({events: resp}));
   }
 
   render() {
     return (
       <View style={defaultStyles.container}>
-        <Search />
         <ScrollView style={styles.scrollContainer}>
           {this.state.events.map((event, index) => {
             return (
@@ -62,6 +59,7 @@ export default class HomeScreen extends Component {
                   category={event.event_category.name}
                   tickets_available={event.tickets_available}
                   navigation={this.navigation}
+                  edit={true}
                 />
                 {index != this.state.events.length - 1 && <Hr size="20" />}
               </View>

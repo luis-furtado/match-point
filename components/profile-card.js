@@ -25,7 +25,7 @@ export default class ProfileCard extends Component {
     }).then(response => response.json())
       .then(resp => resp.message && resp.message == 'Unauthenticated.' ? 
       this.props.navigation.navigate('LogIn') : 
-      (alert('Sucesso! Ingresso adicionado em meus tickets.') && this.props.navigation.navigate('Ticket')))
+      (alert('Sucesso! Ingresso adicionado em meus ingresso.') && this.props.navigation.navigate('Ticket')))
   }
 
   render() {
@@ -70,6 +70,15 @@ export default class ProfileCard extends Component {
             <Text style={styles.tag}>{this.props.category}</Text>
           </View>
           <View style={styles.containerBuyButton}> 
+          { this.props.edit ? 
+            <View>
+              <Button 
+                title="Editar" 
+                onPress={ () => alert('bora editar')}
+              />
+            </View>
+            : 
+            <View>
             <View style={styles.buyButton}>
               <Button
                 title="Comprar"
@@ -89,6 +98,8 @@ export default class ProfileCard extends Component {
                 {this.props.tickets_available} disponíveis
               </Text>
             </View>
+            </View>
+            }
           </View>
         </View>
       </View>

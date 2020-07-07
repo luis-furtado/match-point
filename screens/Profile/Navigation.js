@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ShowProfileScreen from "./ShowProfileScreen.js";
 import EditProfileScreen from "./EditProfileScreen.js";
 import CreateEventScreen from "../CreateEventScreen.js";
+import ShowEventsScreen from "../ShowEventsScreen.js";
 
 const Stack = createStackNavigator();
 
@@ -35,16 +36,6 @@ export default function ProfileNavigation({ navigation }) {
         component={EditProfileScreen}
         options={{
           title: "Editar",
-          headerRight: () => (
-            <Button
-              title="Salvar"
-              color="rgb(254, 115, 62)"
-              onPress={() => {
-                alert("Salvo com sucesso!");
-                navigation.navigate("ProfileShow");
-              }}
-            />
-          ),
         }}
       />
       <Stack.Screen
@@ -52,6 +43,13 @@ export default function ProfileNavigation({ navigation }) {
         component={CreateEventScreen}
         options={{
           title: "Criar Evento",
+        }}
+      />
+      <Stack.Screen
+        name="ShowEvents"
+        component={ShowEventsScreen}
+        options={{
+          title: "Meus Eventos",
         }}
       />
     </Stack.Navigator>

@@ -15,15 +15,41 @@ import Tags from "../../components/tag.js";
 import { Icon } from "react-native-elements";
 
 export default class EditProfileScreen extends Component {
-  constructor(props) {
-    super(props);
+  constructor({ navigation }) {
+    super(navigation );
     this.state = {
       name: null,
       email: null,
       phone: null,
-      password: 0,
+      password: null,
     };
+    this.navigation = navigation;
   }
+
+  sendUserData() {
+    const formData = new FormData();
+    formData.append('name', this.state.name);
+    formData.append('email', this.state.email);
+    // formData.append('phone', this.state.phone);
+    formData.append('password', this.state.password);
+
+    fetch("http://127.0.0.1:8000/api/user/edit", {
+      method: "post",
+      headers: {     
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + global.user_api_token,
+      }, 
+      body: formData,
+    }).then((response) => {
+      if(response.status == '200') {
+        alert('Mudança feita com sucesso!');
+        return this.navigation.goBack();
+      }
+      return alert('Erro no servidor');
+  });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -60,32 +86,32 @@ export default class EditProfileScreen extends Component {
             <Text style={styles.labelInput}>Telefone:</Text>
             <TextInput
               style={styles.textInput}
-              onChangeText={(text) => this.setState({ price: text })}
-              value={this.state.price}
+              onChangeText={(text) => this.setState({ phone: text })}
+              value={this.state.phone}
             />
           </View>
           <View style={styles.input}>
           <Text style={styles.labelInput}>Senha:</Text>
           <TextInput
-                  style={styles.textInput}
-                  placeholder="********"
-                  secureTextEntry={true}
-                  onChange={(text) => this.setState({ password: text })}
+            style={styles.textInput}
+            placeholder="********"
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({ password: text })}
                 />
           </View>
         </ScrollView>
         <TouchableOpacity
-                style={styles.submitContainer}
-                onPress={() => this.sendUserData()}
-              >
-                <Icon
-                  name="chevron-right"
-                  type="font-awesome"
-                  color="rgb(254, 115, 62)"
-                  size="22"
-                />
-                <Text style={styles.submitButton}>Enviar</Text>
-              </TouchableOpacity>
+          onPress={() => this.sendUserData()}
+          style={styles.submitContainer}
+        >
+          <Icon
+            name="chevron-right"
+            type="font-awesome"
+            color="rgb(254, 115, 62)"
+            size="22"
+          />
+          <Text style={styles.submitButton}>Enviar</Text>
+        </TouchableOpacity>
       </View>
       
     );

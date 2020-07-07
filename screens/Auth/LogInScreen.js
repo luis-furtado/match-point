@@ -14,7 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 export default class LoginScreen extends Component {
   constructor({ navigation }) {
-    super(navigation);
+    super({navigation});
     this.state = {
       email: null,
       password: null,
@@ -36,8 +36,16 @@ export default class LoginScreen extends Component {
       }, 
       body: formData,
     }).then(response => response.json())
-      .then(resp => { global.user_api_token = resp.data.api_token; global.user = resp.data; console.log(resp) })
-      .finally(() => global.user_api_token ? this.navigation.navigate('AppNavigator') : alert('Email ou senha incorretos!'))
+      .then((resp) => { 
+        if(resp.data && resp.data.api_token) {
+          global.user_api_token = resp.data.api_token; 
+          global.user = resp.data; 
+          this.setState({password: ''}); 
+          console.log(resp)
+          return this.navigation.navigate('AppNavigator');
+        }
+          alert('Email ou senha incorretos!')
+    })
   }
 
   render() {
@@ -51,12 +59,14 @@ export default class LoginScreen extends Component {
             <TextInput
               style={styles.textInput}
               placeholder="Email"
+              value={this.state.email}
               onChangeText={(text) => this.setState({ email: text })}
             />
             <TextInput
               style={styles.textInput}
               placeholder="Senha"
               secureTextEntry={true}
+              value={this.state.password}
               onChangeText={(text) => this.setState({ password: text })}
             />
             <View style={styles.forgotPassword}>

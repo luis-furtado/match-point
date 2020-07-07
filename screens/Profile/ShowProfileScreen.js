@@ -7,10 +7,27 @@ import { NavigationContainer } from "@react-navigation/native";
 
 export default class ProfileScreen extends Component {
   constructor({ navigation }) {
-    super(navigation);
+    super({navigation});
     this.state = {};
     this.navigation = navigation
   }
+
+  logoutUser() {
+    fetch("http://127.0.0.1:8000/api/user/logout", {
+      method: "post",
+      headers: {     
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + global.user_api_token,
+      }, 
+    }).then((response) => {
+      if(response.status == '200') {
+        alert('Logout feito com sucesso!');
+        return this.navigation.navigate('LogIn');
+      }
+      return alert('Erro no servidor');
+  });
+}
 
   render() {
     return (
@@ -36,12 +53,19 @@ export default class ProfileScreen extends Component {
           color="rgb(254, 115, 62)"
           onPress={ () => this.navigation.navigate('CreateEvent') }
         />
+        <View style={styles.button}>
+        <Button
+          title="Meus Eventos"
+          color="rgb(254, 115, 62)"
+          onPress={ () => this.navigation.navigate('ShowEvents') }
+        />
+        </View>
         </View>
         <View style={styles.button}>
         <Button
           title="Sair"
           color="rgb(254, 115, 62)"
-          onPress={() => this.navigation.navigate('LogIn')}
+          onPress={() => this.logoutUser()}
         />
         </View>
       </View>
