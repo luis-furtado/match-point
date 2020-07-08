@@ -9,6 +9,7 @@ import ShowProfileScreen from "./ShowProfileScreen.js";
 import EditProfileScreen from "./EditProfileScreen.js";
 import CreateEventScreen from "../CreateEventScreen.js";
 import ShowEventsScreen from "../ShowEventsScreen.js";
+import EditEventScreen from "./EditEventScreen.js";
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,13 @@ export default function ProfileNavigation({ navigation }) {
         component={ShowEventsScreen}
         options={{
           title: "Meus Eventos",
+        }}
+      />
+      <Stack.Screen
+        name="EditEvent"
+        component={EditEventScreen}
+        options={{
+          title: "Editar evento",
         }}
       />
     </Stack.Navigator>

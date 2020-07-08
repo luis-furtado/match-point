@@ -53,15 +53,16 @@ export default class HomeScreen extends Component {
                 <ProfileCard
                   id={event.id}
                   imagePath={require("../assets/images/show.png")}
-                  name={event.title}
+                  title={event.title}
                   location={event.location}
-                  infoDate={event.date}
+                  date={event.date}
                   attractions={event.attractions}
                   description={event.description}
                   price={event.price}
-                  category={event.event_category.name}
+                  event_category={event.event_category}
                   tickets_available={event.tickets_available}
                   navigation={this.navigation}
+                  refreshHome={() => this.getEventsData() }
                 />
                 {index != this.state.events.length - 1 && <Hr size="20" />}
               </View>

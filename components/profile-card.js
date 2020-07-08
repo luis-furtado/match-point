@@ -23,9 +23,13 @@ export default class ProfileCard extends Component {
       }, 
       body: formData,
     }).then(response => response.json())
-      .then(resp => resp.message && resp.message == 'Unauthenticated.' ? 
-      this.props.navigation.navigate('LogIn') : 
-      (alert('Sucesso! Ingresso adicionado em meus ingresso.') && this.props.navigation.navigate('Ticket')))
+      .then((resp) => {
+        if(resp.message && resp.message == 'Unauthenticated.') {
+          return this.props.navigation.navigate('LogIn')
+        }
+        alert('Sucesso! Ingresso adicionado em meus ingresso.');
+        this.props.refreshHome();
+      });
   }
 
   render() {
@@ -39,7 +43,7 @@ export default class ProfileCard extends Component {
             }
           />
           <View style={styles.nameUsernameContainer}>
-            <Text style={styles.name}>{this.props.name}</Text>
+            <Text style={styles.name}>{this.props.title}</Text>
             <View>
               <View style={styles.infoContainer}>
               <Icon name="hourglass-half" type="font-awesome" size="14" />
@@ -67,14 +71,14 @@ export default class ProfileCard extends Component {
         <Text style={styles.description}>{this.props.description}</Text>
         <View style={styles.bottomContainer}>
           <View style={styles.tagsContainer}>
-            <Text style={styles.tag}>{this.props.category}</Text>
+            <Text style={styles.tag}>{this.props.event_category.name}</Text>
           </View>
           <View style={styles.containerBuyButton}> 
           { this.props.edit ? 
             <View>
               <Button 
                 title="Editar" 
-                onPress={ () => alert('bora editar')}
+                onPress={ () => this.props.navigation.navigate('EditEvent', this.props)}
               />
             </View>
             : 
@@ -82,14 +86,14 @@ export default class ProfileCard extends Component {
             <View style={styles.buyButton}>
               <Button
                 title="Comprar"
-                color="rgb(254, 115, 62)"
+                // color="rgb(254, 115, 62)"
                 onPress={() => this.buyTicket()}
               />
               <Icon
                 name='angle-right'
                 type='font-awesome'
                 size="30"
-                color='rgb(254, 115, 62)'
+                color='rgb(20, 132, 254)'
                 style={{marginBottom: 2}}
               />
             </View>
@@ -212,10 +216,11 @@ const styles = StyleSheet.create({
     marginTop: -4,
     color: 'gray',
     fontSize: 10,
-    fontWeight: "400"
+    fontWeight: "400",
+    textAlign: "right",
   },
   containerBuyButton: {
     flexDirection: "column",
-    alignItems: "flex-end"
+    alignItems: "flex-start",
   }
 });

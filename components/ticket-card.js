@@ -38,7 +38,8 @@ export default function ProfileCard(props) {
       <View style={styles.attractionsContainer}>
         <Icon name="ticket" type="font-awesome" size="14" />
         <Text style={styles.infoAttractions}>
-          {'CÓDIGO: ' + props.ticketHash}
+          CÓDIGO:&nbsp;&nbsp;
+          <Text style={styles.hashCode}>{props.ticketHash}</Text>
         </Text>
       </View>
       <Hr size="25" />
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   infoAttractions: {
-    fontWeight: "400",
+    fontWeight: "300",
     marginLeft: 10,
     fontSize: 18,
   },
@@ -147,4 +148,7 @@ const styles = StyleSheet.create({
   yearsOldSpan: {
     fontWeight: "300",
   },
+  hashCode: {
+    fontWeight: "500",
+  }
 });

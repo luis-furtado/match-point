@@ -43,13 +43,13 @@ export default class HomeScreen extends Component {
               <View>
                 <ProfileCard
                   imagePath={require("../assets/images/show.png")}
-                  name={event.title}
+                  title={event.title}
                   location={event.location}
-                  infoDate={event.date}
+                  date={event.date}
                   attractions={event.attractions}
                   description={event.description}
                   price={event.price}
-                  category={event.event_category.name}
+                  event_category={event.event_category}
                 />
                 {index != this.state.events.length - 1 && <Hr size="20" />}
               </View>

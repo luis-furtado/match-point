@@ -50,13 +50,13 @@ export default class ShowEvents extends Component {
                 <ProfileCard
                   id={event.id}
                   imagePath={require("../assets/images/show.png")}
-                  name={event.title}
+                  title={event.title}
                   location={event.location}
                   infoDate={event.date}
                   attractions={event.attractions}
                   description={event.description}
                   price={event.price}
-                  category={event.event_category.name}
+                  event_category={event.event_category}
                   tickets_available={event.tickets_available}
                   navigation={this.navigation}
                   edit={true}
