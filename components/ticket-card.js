@@ -6,27 +6,27 @@ import Hr from "../components/hr.js";
 
 import { Icon } from "react-native-elements";
 
-export default function ProfileCard(props) {
+export default function EventCard(props) {
   return (
     <View style={props.style}>
       <View style={styles.container}>
         <Image
           style={styles.photo}
           source={
-            props.imagePath || require("../assets/images/no-photo-profile.png")
+            props.imagePath || require("../assets/images/no-photo.png")
           }
         />
         <View style={styles.nameUsernameContainer}>
           <Text style={styles.name}>{props.name}</Text>
           <View>
             <View style={styles.infoContainer}>
-            <Icon name="hourglass-half" type="font-awesome" size="14" />
+            <Icon name="hourglass-half" type="font-awesome" size={10} />
               <Text style={styles.info}>
                 {props.infoDate}
               </Text>
             </View>
             <View style={styles.locationContainer}>
-              <Icon name="map-marker" type="font-awesome" size="14" />
+              <Icon name="map-marker" type="font-awesome" size={14} />
               <Text style={styles.info}>{props.location}</Text>
             </View>
           </View>
@@ -36,13 +36,13 @@ export default function ProfileCard(props) {
         </View>
       </View>
       <View style={styles.attractionsContainer}>
-        <Icon name="ticket" type="font-awesome" size="14" />
+        <Icon name="ticket" type="font-awesome" size={14} />
         <Text style={styles.infoAttractions}>
           CÓDIGO:&nbsp;&nbsp;
           <Text style={styles.hashCode}>{props.ticketHash}</Text>
         </Text>
       </View>
-      <Hr size="25" />
+      <Hr size={25} />
     </View>
   );
 }
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 1.2,
-    borderRadius: 50,
+    borderRadius: 10,
     borderWidth: 1.5,
     borderColor: "rgb(254, 115, 62)",
     width: "100%",

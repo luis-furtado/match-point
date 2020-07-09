@@ -17,16 +17,17 @@ import { Icon } from "react-native-elements";
 export default class EditEventScreen extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      id: this.props.route.params.id,
-      title: this.props.route.params.title,
-      attractions: this.props.route.params.attractions,
-      location: this.props.route.params.location,
-      date: this.props.route.params.infoDate,
-      price: this.props.route.params.price.toString(),
-      description: this.props.route.params.description,
-      tickets_available: this.props.route.params.tickets_available.toString(),
-      event_category_id: this.props.route.params.event_category.id,
+      id: this.props.route.params.event.id,
+      title: this.props.route.params.event.title,
+      attractions: this.props.route.params.event.attractions,
+      location: this.props.route.params.event.location,
+      date: this.props.route.params.event.infoDate,
+      price: this.props.route.params.event.price.toString(),
+      description: this.props.route.params.event.description,
+      tickets_available: this.props.route.params.event.tickets_available.toString(),
+      event_category_id: this.props.route.params.event.event_category.id,
       categories: [],
     };
   }

@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import { View, Image, StyleSheet, Text, FlatList, Button } from "react-native";
-import Tag from "../components/tag.js";
+import Tag from "./tag.js";
 
 import { Icon } from "react-native-elements";
 
-export default class ProfileCard extends Component {
+export default class EventCard extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
   }
 
   buyTicket() {
     const formData = new FormData();
-    formData.append('event_id', this.props.id);
+    formData.append('event_id', this.props.event.id);
 
     fetch("http://127.0.0.1:8000/api/user/tickets/comprar", {
       method: "post",
@@ -35,50 +34,57 @@ export default class ProfileCard extends Component {
   render() {
     return (
       <View style={this.props.style}>
-        <View style={styles.container}>
+        <View style={[styles.container, this.props.edit ? { marginTop: 0 } : { marginTop: 30 }]}>
           <Image
             style={styles.photo}
             source={
-              this.props.imagePath || require("../assets/images/no-photo-profile.png")
+              this.props.imagePath || require("../assets/images/no-photo.png")
             }
           />
           <View style={styles.nameUsernameContainer}>
-            <Text style={styles.name}>{this.props.title}</Text>
+            <Text style={styles.name}>{this.props.event.title}</Text>
             <View>
               <View style={styles.infoContainer}>
-              <Icon name="hourglass-half" type="font-awesome" size="14" />
+              <Icon name="hourglass-half" type="font-awesome" size={10} />
                 <Text style={styles.info}>
-                  {this.props.infoDate}
+                  {this.props.event.date}
                 </Text>
               </View>
               <View style={styles.locationContainer}>
-                <Icon name="map-marker" type="font-awesome" size="14" />
-                <Text style={styles.info}>{this.props.location}</Text>
+                <Icon name="map-marker" type="font-awesome" size={14} />
+                <Text style={styles.info}>{this.props.event.location}</Text>
               </View>
             </View>
           </View>
           <View style={styles.rateContainer}>
-            <Text style={styles.price}>R$ {this.props.price},00</Text>
+            <Text style={styles.price}>R$ {this.props.event.price},00</Text>
           </View>
         </View>
         <View style={styles.attractionsContainer}>
-          <Icon name="users" type="font-awesome" size="14" />
+          <Icon name="users" type="font-awesome" size={14} />
           <Text style={styles.infoAttractions}>
-            {this.props.attractions}
+            {this.props.event.attractions}
           </Text>
         </View>
   
-        <Text style={styles.description}>{this.props.description}</Text>
+        <Text style={styles.description}>{this.props.event.description}</Text>
         <View style={styles.bottomContainer}>
           <View style={styles.tagsContainer}>
-            <Text style={styles.tag}>{this.props.event_category.name}</Text>
+            <Text style={styles.tag}>{this.props.event.event_category.name}</Text>
           </View>
           <View style={styles.containerBuyButton}> 
           { this.props.edit ? 
-            <View>
+            <View style={styles.buyButton}>
               <Button 
                 title="Editar" 
-                onPress={ () => this.props.navigation.navigate('EditEvent', this.props)}
+                onPress={ () => this.props.navigation.navigate('EditEvent', this.props.event)}
+              />
+              <Icon
+                name='angle-right'
+                type='font-awesome'
+                size={30}
+                color='rgb(20, 132, 254)'
+                style={{marginBottom: 2}}
               />
             </View>
             : 
@@ -92,14 +98,14 @@ export default class ProfileCard extends Component {
               <Icon
                 name='angle-right'
                 type='font-awesome'
-                size="30"
+                size={30}
                 color='rgb(20, 132, 254)'
                 style={{marginBottom: 2}}
               />
             </View>
             <View>
               <Text style={styles.spanBuyButton}>
-                {this.props.tickets_available} disponíveis
+                {this.props.event.tickets_available} disponíveis
               </Text>
             </View>
             </View>
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     flex: 1.2,
-    borderRadius: 50,
+    borderRadius: 10,
     borderWidth: 1.5,
     borderColor: "rgb(254, 115, 62)",
     width: "100%",

@@ -15,15 +15,14 @@ import Tags from "../../components/tag.js";
 import { Icon } from "react-native-elements";
 
 export default class EditProfileScreen extends Component {
-  constructor({ navigation }) {
-    super(navigation );
+  constructor(props) {
+    super(props);
     this.state = {
-      name: null,
-      email: null,
-      phone: null,
+      name: global.user.name,
+      email: global.user.email,
+      phone: global.user.phone,
       password: null,
     };
-    this.navigation = navigation;
   }
 
   sendUserData() {
@@ -44,7 +43,7 @@ export default class EditProfileScreen extends Component {
     }).then((response) => {
       if(response.status == '200') {
         alert('Mudança feita com sucesso!');
-        return this.navigation.goBack();
+        return this.props.navigation.goBack();
       }
       return alert('Erro no servidor');
   });

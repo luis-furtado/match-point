@@ -2,20 +2,19 @@ import React, { Component } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 
-import ProfileCard from "../components/profile-card.js";
+import EventCard from "../components/event-card.js";
 import Hr from "../components/hr.js";
 
 //styles
 import defaultStyles from "../styles/defaultStyles.js";
 
 export default class ShowEvents extends Component {
-  constructor({navigation}) {
-    super({navigation});
+  constructor(props) {
+    super(props);
     this.state = {
       events: [],
     };
     this.loop = [0, 1, 2, 3, 4, 5];
-    this.navigation = navigation;
   }
 
   componentDidMount() {
@@ -47,18 +46,9 @@ export default class ShowEvents extends Component {
           {this.state.events.map((event, index) => {
             return (
               <View>
-                <ProfileCard
-                  id={event.id}
-                  imagePath={require("../assets/images/show.png")}
-                  title={event.title}
-                  location={event.location}
-                  infoDate={event.date}
-                  attractions={event.attractions}
-                  description={event.description}
-                  price={event.price}
-                  event_category={event.event_category}
-                  tickets_available={event.tickets_available}
-                  navigation={this.navigation}
+                <EventCard
+                  event={event}
+                  navigation={this.props.navigation}
                   edit={true}
                 />
                 {index != this.state.events.length - 1 && <Hr size="20" />}
@@ -73,6 +63,5 @@ export default class ShowEvents extends Component {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginTop: 25,
   },
 });

@@ -15,8 +15,8 @@ import Hr from "../components/hr.js";
 import { Icon } from "react-native-elements";
 
 export default class CreateEventScreen extends Component {
-  constructor({ navigation }) {
-    super(navigation);
+  constructor(props) {
+    super(props);
     this.state = {
       title: null,
       attractions: null,
@@ -28,8 +28,6 @@ export default class CreateEventScreen extends Component {
       event_category_id: null,
       categories: [],
     };
-
-    this.navigation = navigation;
   }
 
   componentDidMount() { 
@@ -98,7 +96,7 @@ export default class CreateEventScreen extends Component {
               require("../assets/images/no-photo-profile.png")
             }
           />
-          <Button title="Alterar foto do evento" />
+          <Button title="Adicionar foto do evento" />
         </View>
         <Hr size="25" />
         <Text style={styles.ProfileSpan}>Informações Gerais</Text>

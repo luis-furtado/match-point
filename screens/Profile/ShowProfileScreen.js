@@ -6,10 +6,9 @@ import Hr from '../../components/hr.js';
 import { NavigationContainer } from "@react-navigation/native";
 
 export default class ProfileScreen extends Component {
-  constructor({ navigation }) {
-    super({navigation});
+  constructor(props) {
+    super(props);
     this.state = {};
-    this.navigation = navigation
   }
 
   logoutUser() {
@@ -23,7 +22,7 @@ export default class ProfileScreen extends Component {
     }).then((response) => {
       if(response.status == '200') {
         alert('Logout feito com sucesso!');
-        return this.navigation.navigate('LogIn');
+        return this.props.navigation.navigate('LogIn');
       }
       return alert('Erro no servidor');
   });
@@ -42,29 +41,29 @@ export default class ProfileScreen extends Component {
         <Hr size="35" />
         <View style={styles.button}>
         <Button
-          onPress={ () => this.navigation.navigate('ProfileEdit') }
+          onPress={ () => this.props.navigation.navigate('ProfileEdit') }
           title="Editar perfil"
-          color="rgb(254, 115, 62)"
+          // color="rgb(254, 115, 62)"
         />
         </View>
         <View style={styles.button}>
         <Button
           title="Criar Evento"
-          color="rgb(254, 115, 62)"
-          onPress={ () => this.navigation.navigate('CreateEvent') }
+          // color="rgb(254, 115, 62)"
+          onPress={ () => this.props.navigation.navigate('CreateEvent') }
         />
         <View style={styles.button}>
         <Button
           title="Meus Eventos"
-          color="rgb(254, 115, 62)"
-          onPress={ () => this.navigation.navigate('ShowEvents') }
+          // color="rgb(254, 115, 62)"
+          onPress={ () => this.props.navigation.navigate('ShowEvents') }
         />
         </View>
         </View>
         <View style={styles.button}>
         <Button
           title="Sair"
-          color="rgb(254, 115, 62)"
+          // color="rgb(254, 115, 62)"
           onPress={() => this.logoutUser()}
         />
         </View>

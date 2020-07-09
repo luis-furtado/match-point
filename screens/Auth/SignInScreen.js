@@ -16,8 +16,8 @@ import defaultStyles from "../../styles/defaultStyles.js";
 import PickerSelect from "react-native-picker-select";
 
 export default class SignInScreen extends Component {
-  constructor({ navigation }) {
-    super(navigation);
+  constructor(props) {
+    super(props);
     this.state = {
       name: null,
       email: null,
@@ -25,7 +25,6 @@ export default class SignInScreen extends Component {
       password: null,
       authenticated: null,
     };
-    this.navigation = navigation;
   }
 
   // componentDidMount() {
@@ -62,7 +61,7 @@ export default class SignInScreen extends Component {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButtonContainer}
-            onPress={() => this.navigation.goBack()}
+            onPress={() => this.props.navigation.goBack()}
           >
             <View style={styles.iconHeader}>
               <Icon

@@ -11,13 +11,12 @@ import { Icon } from "react-native-elements";
 import defaultStyles from "../styles/defaultStyles.js";
 
 export default class SearchScreen extends Component {
-  constructor({ navigation }) {
-    super(navigation);
+  constructor(props) {
+    super(props);
     this.state = {
       isLoading: false,
       tickets: [],
     };
-    this.navigation = navigation;
   }
 
   componentDidMount() {
@@ -41,7 +40,7 @@ export default class SearchScreen extends Component {
         <View style={styles.header}>
             <TouchableOpacity
               style={styles.backButtonContainer}
-              onPress={() => this.navigation.goBack()}
+              onPress={() => this.props.navigation.goBack()}
             >
               <View style={styles.iconHeader}>
                 <Icon
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 15,
   },
-  profileCards: {
+  EventCards: {
     paddingTop: 20,
   },
 });

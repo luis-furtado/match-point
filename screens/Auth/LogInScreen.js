@@ -13,14 +13,13 @@ import Hr from "../../components/hr.js";
 import { NavigationContainer } from "@react-navigation/native";
 
 export default class LoginScreen extends Component {
-  constructor({ navigation }) {
-    super({navigation});
+  constructor(props) {
+    super(props);
     this.state = {
       email: null,
       password: null,
       authenticated: null,
     };
-    this.navigation = navigation;
   }
 
   sendUserData() {
@@ -42,7 +41,7 @@ export default class LoginScreen extends Component {
           global.user = resp.data; 
           this.setState({password: ''}); 
           console.log(resp)
-          return this.navigation.navigate('AppNavigator');
+          return this.props.navigation.navigate('AppNavigator');
         }
           alert('Email ou senha incorretos!')
     })
@@ -91,7 +90,7 @@ export default class LoginScreen extends Component {
           <Button
             style={styles.signupButton}
             title="Criar conta"
-            onPress={() => this.navigation.navigate("SignIn")}
+            onPress={() => this.props.navigation.navigate("SignIn")}
           />
         </View>
       </View>
