@@ -38,30 +38,21 @@ export default class HomeScreen extends Component {
       }, 
     }).then(response => response.json())
       .then(resp => this.setState({events: resp}))
-      .then(() => console.log(this.state.events));
   }
 
   render() {
     return (
       <View style={defaultStyles.container}>
         <Search />
-        <ScrollView style={styles.scrollContainer}>
+        <ScrollView 
+          style={styles.scrollContainer}
+          onScrollEndDrag={() => this.getEventsData()}
+        >
           {this.state.events.map((event, index) => {
             return (
-              <View>
+              <View key={index}>
                 <EventCard
-                  // id={event.id}
-                  // imagePath={require("../assets/images/show.png")}
-                  // title={event.title}
-                  // location={event.location}
-                  // date={event.date}
-                  // attractions={event.attractions}
-                  // description={event.description}
-                  // price={event.price}
-                  // event_category={event.event_category}
-                  // tickets_available={event.tickets_available}
                   event={event}
-                  // navigation={this.props.navigation}
                   refreshHome={() => this.getEventsData() }
                 />
                 {index != this.state.events.length - 1 && <Hr size={20} />}

@@ -19,15 +19,7 @@ export default class ShowEvents extends Component {
 
   componentDidMount() {
     this.getEventsData();
-
-    // this.focusListener = navigation.addListener('didFocus', () => {
-    //   this.getEventsData();
-    // });
   }
-
-  // componentWillUnmount() {
-  //   this.focusListener.remove();
-  // }
 
   getEventsData() {
     fetch("http://127.0.0.1:8000/api/user/events", {
@@ -45,7 +37,7 @@ export default class ShowEvents extends Component {
         <ScrollView style={styles.scrollContainer}>
           {this.state.events.map((event, index) => {
             return (
-              <View>
+              <View key={index}>
                 <EventCard
                   event={event}
                   navigation={this.props.navigation}

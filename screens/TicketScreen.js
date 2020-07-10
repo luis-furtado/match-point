@@ -31,7 +31,6 @@ export default class SearchScreen extends Component {
       }, 
     }).then(response => response.json())
       .then(resp => this.setState({tickets: resp}))
-      .then(() => console.log(this.state.tickets));
   }
 
   render() {
@@ -55,18 +54,21 @@ export default class SearchScreen extends Component {
             <View style={styles.headerFreeSpace}></View>
           </View>
         <View>
-        <ScrollView>
-        { this.state.tickets.map((ticket) => {
+        <ScrollView
+          onScrollEndDrag={() => this.loadTicketsData()}
+        >
+        { this.state.tickets.map((ticket, index) => {
           return (
             <TicketCard
-              imagePath={require("../assets/images/show.png")}
+              key={index}
+              imagePath={{ uri: 'http://lorempixel.com/400/400/nightlife/'}}
               name={ticket.event.title}
               location={ticket.event.location}
               infoDate={ticket.event.date}
               ticketHash={ticket.hashid}
               price={ticket.event.price}
                   />
-          );
+            );
            }) }
         </ScrollView>
         </View>

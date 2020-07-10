@@ -37,9 +37,9 @@ export default class EventCard extends Component {
         <View style={[styles.container, this.props.edit ? { marginTop: 0 } : { marginTop: 30 }]}>
           <Image
             style={styles.photo}
-            source={
-              this.props.imagePath || require("../assets/images/no-photo.png")
-            }
+            source={{
+              uri: 'http://lorempixel.com/400/400/nightlife'
+            }}
           />
           <View style={styles.nameUsernameContainer}>
             <Text style={styles.name}>{this.props.event.title}</Text>
@@ -77,7 +77,8 @@ export default class EventCard extends Component {
             <View style={styles.buyButton}>
               <Button 
                 title="Editar" 
-                onPress={ () => this.props.navigation.navigate('EditEvent', this.props.event)}
+                onPress={ () => this.props.navigation.navigate('EditEvent', 
+                {event: this.props.event})}
               />
               <Icon
                 name='angle-right'

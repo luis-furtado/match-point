@@ -10,27 +10,34 @@ import {
   TouchableOpacity
 } from "react-native";
 
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+
 import Hr from "../components/hr.js";
 
 import { Icon } from "react-native-elements";
+
 
 export default class CreateEventScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: null,
-      attractions: null,
-      local: null,
-      date: null,
-      price: null,
-      description: null,
-      tickets_available: null,
-      event_category_id: null,
+      title: 'teste',
+      attractions: 'teste',
+      local: 'teste',
+      date: '2020-07-09 20:49:42',
+      price: '210',
+      description: 'teste',
+      tickets_available: '210',
+      event_category_id: 1,
+      image: null,
       categories: [],
     };
   }
 
   componentDidMount() { 
+    this.getPermissionAsync();
     this.getEventCategoriesData();
   }
 
@@ -39,7 +46,6 @@ export default class CreateEventScreen extends Component {
       method: "get",
     }).then(response => response.json())
       .then(resp => this.setState({categories: resp}))
-      .then(() => console.log(this.state.categories));
   }
 
   sendUserData() {
@@ -52,6 +58,8 @@ export default class CreateEventScreen extends Component {
     formData.append('description', this.state.description);
     formData.append('tickets_available', this.state.tickets_available);
     formData.append('event_category_id', this.state.event_category_id);
+    // formData.append('image', this.state.image);
+    // console.log(this.state.image);
 
     fetch("http://127.0.0.1:8000/api/user/events/create", {
       method: "post",
@@ -65,7 +73,7 @@ export default class CreateEventScreen extends Component {
       .then((resp) => {
         if(resp.created_at) {
           alert('Evento criado com sucesso!');
-          this.navigation.goBack();
+          this.props.navigation.goBack();
         }
         else {
           alert('Faltam campos a serem preenchidos');
@@ -85,20 +93,44 @@ export default class CreateEventScreen extends Component {
     this.setState({event_category_id: this.state.categories[index].id});
   }
 
+  getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+
+  _pickImage = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        this.setState({ image: result.uri });
+      }
+
+      console.log(result);
+    } catch (E) {
+      console.log(E);
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.photoContainer}>
-          <Image
-            style={styles.photo}
-            source={
-              this.props.imagePath ||
-              require("../assets/images/no-photo-profile.png")
-            }
+          {this.state.image && <Image source={{ uri: this.state.image }} style={styles.photo}  />}
+          <Button 
+            title="Adicionar foto do evento" 
+            onPress={this._pickImage}
           />
-          <Button title="Adicionar foto do evento" />
         </View>
-        <Hr size="25" />
+        <Hr size={25} />
         <Text style={styles.ProfileSpan}>Informações Gerais</Text>
         <ScrollView style={styles.profileContainer}>
           <View style={styles.input}>
@@ -190,7 +222,7 @@ export default class CreateEventScreen extends Component {
                   name="chevron-right"
                   type="font-awesome"
                   color="rgb(254, 115, 62)"
-                  size="22"
+                  size={22}
                 />
                 <Text style={styles.submitButton}>Enviar</Text>
               </TouchableOpacity>

@@ -17,17 +17,19 @@ import { Icon } from "react-native-elements";
 export default class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    console.log(this.props);
+    this.event = this.props.route.params.event;
+
     this.state = {
-      id: this.props.route.params.event.id,
-      title: this.props.route.params.event.title,
-      attractions: this.props.route.params.event.attractions,
-      location: this.props.route.params.event.location,
-      date: this.props.route.params.event.infoDate,
-      price: this.props.route.params.event.price.toString(),
-      description: this.props.route.params.event.description,
-      tickets_available: this.props.route.params.event.tickets_available.toString(),
-      event_category_id: this.props.route.params.event.event_category.id,
+      id: this.event.id,
+      title: this.event.title,
+      attractions: this.event.attractions,
+      location: this.event.location,
+      date: this.event.date,
+      price: this.event.price.toString(),
+      description: this.event.description,
+      tickets_available: this.event.tickets_available.toString(),
+      event_category_id: this.event.event_category.id,
       categories: [],
     };
   }
@@ -79,7 +81,7 @@ export default class EditEventScreen extends Component {
           return this.props.navigation.navigate('LogIn')
         }
         alert('Sucesso! Evento atualizado.');
-      });
+      }).then(this.props.navigation.navigate('Home'));
   }
 
   setCategory(index) {

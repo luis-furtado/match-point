@@ -40,7 +40,6 @@ export default class LoginScreen extends Component {
           global.user_api_token = resp.data.api_token; 
           global.user = resp.data; 
           this.setState({password: ''}); 
-          console.log(resp)
           return this.props.navigation.navigate('AppNavigator');
         }
           alert('Email ou senha incorretos!')
@@ -80,7 +79,10 @@ export default class LoginScreen extends Component {
             <CustomButton
               style={styles.buttonLogin}
               title="Entrar"
-              onPress={() => this.sendUserData()}
+              onPress={
+                () => this.sendUserData()
+                // () => this.props.navigation.navigate('AppNavigator')
+              }
             />
           </View>
           <Hr size="60" />
